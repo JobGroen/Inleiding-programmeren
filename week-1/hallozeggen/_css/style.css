@@ -1,0 +1,25 @@
+
+body { /* layout */
+    min-height: calc(100vh - 3em);
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+body { /* tekst stijl */
+font-family: sans-serif;
+	text-align: center;
+}
+ img {
+ 	height: 50vh;
+ }
+
+
+/* het lampje plaatsen */
+/*img#hallomannetje {
+	margin: auto;
+	display: block;
+	height: 50vh;
+	float:left;
+}*/
+

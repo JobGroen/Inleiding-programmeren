@@ -1,0 +1,76 @@
+body {
+    background-color: #000;
+    color: green;
+    font-family: 'VT323';
+    text-align: center;
+}
+
+h1 {
+    border-right: .1em solid lime;
+    width: 15ch;
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 40vh auto;
+}
+
+input,
+label,
+button {
+    font-size: 2em;
+}
+
+input,
+button {
+    background-color: green;
+    color: #000;
+    border: none;
+    padding: 1em;
+}
+
+/* Animatie voor activeren formulier */
+.trigger_form_animation {
+    animation: turn-off 0.5s ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes turn-off {
+    0% {
+        transform: scale(1, 1) translate3d(0, 0, 0);
+        opacity: 1;
+    }
+
+    25% {
+        transform: scale(1, 0.09) translate3d(0, 0, 0);
+        opacity: 1;
+        background: lime;
+    }
+
+    50% {
+        transform: scale(1, 0.01) translate3d(0, 0, 0);
+    }
+
+    75% {
+        transform: scale(0.1, 0.1) translate3d(0, 0, 0);
+    }
+
+    100% {
+        transform: scale(0, 0) translate3d(0, 0, 0);
+    }
+}
+
+/* animatie h1 */
+.trigger_h1_animation {
+    animation: typing 2s steps(14, end), blink-caret .2s step-end infinite alternate;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+}
+
+@keyframes blink-caret {
+    50% {
+        border-color: transparent;
+    }
+}
