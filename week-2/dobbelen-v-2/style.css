@@ -1,0 +1,8 @@
+img {
+    transform: translate(-50%, -50%);
+    position: absolute;
+    margin-right: -50%;
+    margin: 0;
+    left: 50%;
+    top: 50%;
+}
