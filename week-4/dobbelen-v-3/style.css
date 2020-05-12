@@ -1,0 +1,32 @@
+img {
+    transform: translate(-50%, -50%);
+    position: absolute;
+    margin-right: -50%;
+    margin: 0;
+    left: 50%;
+    top: 50%;
+}
+
+h1 {
+  text-align: center;
+}
+
+.throw{
+    animation: throw 0.5s ease-out;
+}
+
+@keyframes throw{
+    0%{
+      transform: translateX(0) rotate(-300deg);
+      opacity: 0
+     }
+   50%{
+      transform: translateX(0) rotate(350deg);
+      opacity: 1;
+    }
+    100%{
+        transform: translateX(0) rotate(-300deg);
+        opacity: 1;
+      }
+
+  }
