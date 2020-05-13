@@ -24,8 +24,15 @@ function werp(){
 
     if (dobbelsteenAfbeelding == plaatjesArray[0] || dobbelsteenAfbeelding == plaatjesArray[2] || dobbelsteenAfbeelding == plaatjesArray[4]){
         document.querySelector("h1").textContent = "Jammer je hebt " + aantalOgen + " gegooid en verloren!";
-    } else if (dobbelsteenAfbeelding == plaatjesArray%2 == 0){
-        document.querySelector('h1')
+
+    }   else if (dobbelsteenAfbeelding == plaatjesArray%2 == 0){
+        document.querySelector("h1").textContent = "Gefeliciteerd je hebt even gegooid";
+
+    } else if (dobbelsteenAfbeelding == plaatjesArray[1] || dobbelsteenAfbeelding == plaatjesArray[3]){
+        console.log("Gefeliciteerd, nummer " + aantalOgen + "is een win nummer!");
+
+    } else if (dobbelsteenAfbeelding == plaatjesArray[5]){
+        console.log("Nummer " + aantalOgen + " is Feest! dubbel uitbetaald!11!!!!");
     }
 }
 
