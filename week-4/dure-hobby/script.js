@@ -1,8 +1,6 @@
-function dagelijksVerbruik(huidigeLeeftijd, streefLeeftijd, favorieteConsumptie, verbruik, prijs){
+function dagelijksVerbruik(huidigeLeeftijd, streefLeeftijd, verbruik, prijs){
 
-    document.querySelector('p').textContent = huidigeLeeftijd + ", "  + streefLeeftijd + ", "  + favorieteConsumptie + ", "  + verbruik + ", " + prijs;
-
-    var prijsWeek = prijs * 7;
+    var prijsWeek = prijs * 7 * verbruik;
     var overigeJaren = streefLeeftijd - huidigeLeeftijd;
     var wekenInJaar = 52;
 
@@ -11,4 +9,14 @@ function dagelijksVerbruik(huidigeLeeftijd, streefLeeftijd, favorieteConsumptie,
     document.getElementById("uitkomst").textContent = "Als je zo door gaat met je favoriete consumptie ben je in totaal " + allesBijElkaar + " euro kwijt aan sigaretten!";
 }
 
-dagelijksVerbruik(21, 100, "sigaretten", 1, 7);
+
+function verwerkFormulier(){
+    var huidigeLeeftijd = document.querySelector("input#leeftijd").value;
+    var streefLeeftijd = document.querySelector("input#streef").value;
+    var verbruik = document.querySelector("input#verbruik").value;
+    var prijs = document.querySelector("input#prijs").value;
+
+    dagelijksVerbruik(huidigeLeeftijd, streefLeeftijd, verbruik, prijs);
+}
+
+document.querySelector("#submit").addEventListener("click", verwerkFormulier);
