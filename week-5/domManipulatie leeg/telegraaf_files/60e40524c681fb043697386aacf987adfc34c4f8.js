@@ -1,0 +1,1 @@
+dimml.baseDynamic=function(){return '//baltar.dimml.io'};if(dimml.match('*')){dimml.send({},'static',null,'ffec05f5df330dbba143c4b4d917a5e9afdad717')}

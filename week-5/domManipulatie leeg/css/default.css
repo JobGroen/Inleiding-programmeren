@@ -1,0 +1,12 @@
+@-webkit-keyframes blinker {  
+  from { color: 1.0; }
+  to { opacity: 0.0; }
+}
+
+.blink {
+	font-family: "Comic Sans MS", cursive, sans-serif;
+ 	-webkit-animation-name: blinker;  
+ 	-webkit-animation-iteration-count: infinite;  
+ 	-webkit-animation-timing-function: linear(0, 0, 1, 1);
+ 	-webkit-animation-duration: 0.2s; 
+}

@@ -1,0 +1,312 @@
+var lastQuery;
+var lastPage;
+var geoAreaId;
+
+/*if(locationPage == undefined) {*/
+var locationPage = '/teleweer/weersverwachting/';
+/*}*/
+
+function show_preloader(object) {
+	object.html("<div id='wolOverlay'><img src='http://static.weeronline.net/assets/default/images/customers/api_teleweer/loader.gif' width='32' height='32' alt='loading content' /></div>");
+}
+
+function IEtest(v) {
+	var r = RegExp('msie' + (!isNaN(v) ? ('\\s' + v) : ''), 'i');
+	return r.test(navigator.userAgent);
+}
+
+
+var arrCookie = new Array();
+
+function get_cookie(cookieName) {
+	var theCookie=" "+document.cookie;
+	var ind=theCookie.indexOf(" "+cookieName+"=");
+	if (ind==-1) ind=theCookie.indexOf(";"+cookieName+"=");
+	if (ind==-1 || cookieName=="") return "";
+	var ind1=theCookie.indexOf(";",ind+1);
+	if (ind1==-1) ind1=theCookie.length; 
+	return unescape(theCookie.substring(ind+cookieName.length+2,ind1));
+}
+
+function set_cookie(name, value) {
+	if (isNaN(value) || value.length == 0) {
+		return false;
+	}
+	var today = new Date();
+	today.setTime( today.getTime() );
+	expires = 7 * 1000 * 60 * 60 * 24;
+	var expires_date = new Date( today.getTime() + (expires) );
+	document.cookie = name + '=' + value + ';expires=' + expires_date + ';path=/';
+	return true;
+}
+
+
+function load_geo_area_id_official() {
+	jQuery.getJSON("http://webservice.weeronline.nl/api_webserviceip?jsoncallback=?",
+			function(data) {
+				geoAreaId = data;
+				set_cookie('wolGeoAreaId', data);
+	  			perform_after_load();
+		});
+}
+
+function load_geo_area_id() {
+	geoAreaId = 4058223;
+	set_cookie('wolGeoAreaId',geoAreaId);
+	perform_after_load();
+}
+
+function load_fixed_blocks() {
+	if (jQuery('#wolContainerSearchBox').html() != null) {
+		show_preloader(jQuery('#wolContainerSearchBox'));
+		jQuery.getJSON("http://webservice.weeronline.nl/api_searchbox?jsoncallback=?",
+			function(data) {
+	  			jQuery('#wolContainerSearchBox').html(data);
+		});
+	}
+		
+	if (jQuery('#wolContainerTravelWeather2').html() != null) {
+		show_preloader(jQuery('#wolContainerTravelWeather2'));
+		if (IEtest(9) || IEtest(8) || IEtest(7) || IEtest(6)){
+			jQuery.getJSON("http://webservice.weeronline.nl/api_weather2columns?jsoncallback=?",
+				function(data) {
+					jQuery('#wolContainerTravelWeather2').html(data);
+			});
+
+		}else{
+			$.ajax({
+				async: false,
+				type: 'GET',
+				url: "http://webservice.weeronline.nl/api_weather2columns",
+				dataType: 'json',
+				error: function(jqXHR, textStatus, errorThrown) {
+					//I could display multilingual text here, but seeing as this only happens when the serivces fail, 
+					//it would be pointless putting that error in the database.
+					alert('AJAX call failed: '+textStatus+'   ERROR: '+errorThrown);
+				},
+				success: function(data){
+					jQuery('#wolContainerTravelWeather2').html(data);
+				}
+			});	
+		}
+	}
+	if (jQuery('#wolContainerTravelWeather3').html() != null) {
+		show_preloader(jQuery('#wolContainerTravelWeather3'));
+		jQuery.getJSON("http://webservice.weeronline.nl/api_weather3columns?jsoncallback=?",
+			function(data) {
+	  			jQuery('#wolContainerTravelWeather3').html(data);
+		});
+	}
+}
+
+function load_dynamic_blocks(geo, redirect) {
+	if (!isNaN(geo) && geo.length > 0) {
+		geoAreaId = geo;
+	}
+
+	if (isNaN(geoAreaId) || geoAreaId.length == 0) {
+		geoAreaId = load_geo_area_id();
+	}
+	set_cookie('wolGeoAreaId',geoAreaId);
+	if (redirect != false) {
+		window.location = locationPage;
+		return true;
+	}
+
+	if (jQuery('#wolRainRadar').html() != null) {
+		show_preloader(jQuery('#wolRainRadar'));
+		jQuery.getJSON('http://webservice.weeronline.nl/api_rain_radar_470?geoAreaId=' + geoAreaId + '&jsoncallback=?', function(data) {
+			jQuery('#wolRainRadar').html(data);
+		});
+	}
+	if (jQuery('#wolForecast').html() != null) {
+		show_preloader(jQuery('#wolForecast'));
+		jQuery.getJSON("http://webservice.weeronline.nl/api_forecast_2days?geoAreaId=" + geoAreaId + "&jsoncallback=?",
+			function(data) {
+	  			jQuery('#wolForecast').html(data);
+		});
+	}
+
+	if (jQuery('#wolContainerActivities').html() != null) {
+		show_preloader(jQuery('#wolContainerActivities'));
+		jQuery.getJSON("http://webservice.weeronline.nl/api_activities?geoAreaId=" + geoAreaId + "&jsoncallback=?",
+			function(data) {
+	  			jQuery('#wolContainerActivities').html(data);
+		});
+	}
+	if (jQuery('#wolContainerWeatherLocation').html() != null) {
+		show_preloader(jQuery('#wolContainerWeatherLocation'));
+		jQuery.getJSON("http://webservice.weeronline.nl/api_location?geoAreaId=" + geoAreaId + "&jsoncallback=?",
+			function(data) {
+	  			jQuery('#wolContainerWeatherLocation').html(data);
+		});
+	}
+	
+}
+
+function load_5days() {
+	if (jQuery('#wolDays5forecast').html() != null) {
+		show_preloader(jQuery('#wolDays5forecast'));
+		jQuery.getJSON("http://webservice.weeronline.nl/api_forecast_5days?geoAreaId=" + geoAreaId + "&jsoncallback=?",
+			function(data) {
+	  			jQuery('#wolDays5forecast').html(data);
+		});
+	}	
+}
+
+function show_search_results(obj, query, page, showAlways) {
+	if (showAlways == undefined) {
+		showAlways = false;
+	} else {
+		showAlways = true;
+	}
+	lastQuery = query;
+	lastPage = parseInt(page);
+	jQuery.getJSON("http://webservice.weeronline.nl/api_searchpage?q=" + query + "&p=" + page + "&jsoncallback=?",
+		function(data) {
+			if(jQuery(data).find('span.numberOfResults').html() == 1 && showAlways == false) {
+				var link = jQuery(data).find('div.wolContainerResultSearch:first a');
+				if (jQuery(data).find('div.wolContainerResultSearch:first a').attr('rel').substring(0,3) == 'geo') {
+					load_dynamic_blocks(link.attr('rel').substring(3));
+				} else {
+					if (obj != null) {
+						obj.attr('href', link.attr('href'));
+					}
+					return true;
+				}
+				hide_search_results()
+			} else {
+				if (jQuery('div.wolOverlay').length == 0) {
+					jQuery('body').append('<div class="wolOverlay"></div>');
+				}
+				if (jQuery('div#wolSearchResults').length == 0) {
+					jQuery('body').append('<div id="wolSearchResults"></div>');
+				}
+	  			jQuery('#wolSearchResults').html(data);
+	  		}
+	});
+}
+
+function hide_search_results() {
+	jQuery('.wolOverlay, #wolSearchResults').remove();
+}
+
+function perform_after_load() {
+	load_fixed_blocks();
+	load_dynamic_blocks('',false);
+	jQuery('a.wolToggleMap').live('click', function() {
+		var li = jQuery(this).parent();
+		jQuery('#wolRainRadar').find('.mapcontrol li').removeClass('selected');
+		li.toggleClass('selected');
+		jQuery('.wolTabContent').hide();
+		jQuery('.wolTabContent.'+li.attr('id')).show();
+	});
+	
+	
+	jQuery('a[rel^="geo"]').live('click', function() {
+		geoAreaId = jQuery(this).attr('rel').substring(3);
+
+		set_cookie('wolGeoAreaId', geoAreaId);
+		
+		if(window.location.pathname != locationPage) {
+			window.location = locationPage;
+		}
+				
+		load_dynamic_blocks(geoAreaId);
+		
+		if (jQuery(this).find('strong').length) {
+			var this_value = jQuery(this).find('strong:first').html();
+		} else {
+			var this_value = jQuery(this).html();
+		}
+		hide_search_results();
+		jQuery('.wolInputOverlay input').val(this_value);
+		return false;
+	});
+	
+	jQuery('#wol5days').live('click', function() {
+		if (jQuery('#wolDays5forecast').html() == '') {
+			load_5days();
+		}
+		if(!jQuery(this).parent().hasClass('selected')) {
+			jQuery('#wol48HoursForecast').css({'margin-left':'-9999px'});
+			jQuery('#wolDays5forecast').toggle();
+			var li = jQuery(this).parent();
+			li.parent().find('li').removeClass('selected');
+			li.addClass('selected');
+		}
+	});
+	
+	jQuery('#wol48hours').live('click', function() {
+		if(!jQuery(this).parent().hasClass('selected')) {
+			jQuery('#wol48HoursForecast').css({'margin-left':'0px'});
+			jQuery('#wolDays5forecast').toggle();
+			var li = jQuery(this).parent();
+			li.parent().find('li').removeClass('selected');
+			li.addClass('selected');
+		}
+	});
+	
+	
+	jQuery('a.wolSearchBttn').live('click', function() {
+		show_search_results(jQuery(this), jQuery(this).parent().find('.wolInputOverlay input').val(),1);
+		
+	});
+	
+	jQuery('a.wolBlueChangeZipCode').live('click',function() {
+		var text = jQuery(this).parent().html();
+		var end_pos = text.search('<a')-1;
+		show_search_results(null,text.substring(20,end_pos),1,true);
+	});
+	
+	jQuery('.wolInputOverlay input').live('keyup',function(e) {
+		if(e.keyCode == 13) {
+			show_search_results(jQuery(this),jQuery(this).val(),1);
+		}
+	});
+	
+	jQuery('.wolOverlay').live('click',function() {
+		hide_search_results();
+	});
+	
+	jQuery('.wolInputOverlay input').live('click',function() {
+		jQuery(this).val('');
+	});	
+
+	jQuery('.wolNumber').live('click', function() {
+		show_search_results(jQuery(this),lastQuery,jQuery(this).find('a').html());
+		return false;
+	});
+	
+	jQuery('.wolBasePrev.active').live('click',function() {
+		show_search_results(jQuery(this),lastQuery,1);
+	});
+	
+	jQuery('.wolPrev.active').live('click',function() {
+		show_search_results(jQuery(this),lastQuery,lastPage-1);
+	});
+	
+	jQuery('.wolNext.active').live('click',function() {
+		show_search_results(jQuery(this),lastQuery,lastPage+1);
+	});
+	
+	jQuery('.wolBaseNext.active').live('click',function() {
+		var newPage = jQuery('.wolNumber:last a').html();
+		show_search_results(jQuery(this),lastQuery,newPage);
+	});
+}
+		
+jQuery(document).ready(function() {
+
+	jQuery('head').append('<link rel="stylesheet" media="screen" type="text/css" href="http://webservice.weeronline.nl/css/c3ByaXRlc19hY3Rpdml0aWVzLmNzcyNzcHJpdGVzX2ZsYWdzLmNzcw==.css">');
+	jQuery('head').append('<link rel="stylesheet" media="screen" type="text/css" href="http://webservice.weeronline.nl/css/c3ByaXRlc193ZWF0aGVyZGlnaXRzLmNzcyNzcHJpdGVzX3dlYXRoZXJkaWdpdHNfbWVkaXVtX3NtYWxsLmNzcyNzcHJpdGVzX3dlYXRoZXJkaWdpdHNfc21hbGwuY3Nz.css">');
+	jQuery('head').append('<link rel="stylesheet" media="screen" type="text/css" href="http://webservice.weeronline.nl/css/c3ByaXRlc193ZWF0aGVyc3ltYm9sc19sYXJnZS5jc3Mjc3ByaXRlc193ZWF0aGVyc3ltYm9sc19tZWRpdW0uY3NzI3Nwcml0ZXNfd2VhdGhlcnN5bWJvbHNfbWVkaXVtX3NtYWxsLmNzcyNzcHJpdGVzX3dlYXRoZXJzeW1ib2xzX3NtYWxsLmNzcw==.css">');
+	jQuery('head').append('<link rel="stylesheet" media="screen" type="text/css" href="http://webservice.weeronline.nl/css/c3ByaXRlc193aW5kX21lZGl1bV9zbWFsbC5jc3Mjc3ByaXRlc193aW5kX25vcm1hbC5jc3Mjc3ByaXRlc193aW5kX3NtYWxsLmNzcyNzcHJpdGVzX3dpbmRfc21hbGwuY3Nz.css">');
+	jQuery('head').append('<link rel="stylesheet" media="screen" type="text/css" href="http://webservice.weeronline.nl/css/YXBpX3RlbGV3ZWVyLmNzcyN3b2wtYnRuLXNwcml0ZXMuY3Nz.css">');
+	if (get_cookie('wolGeoAreaId') == '') {
+		load_geo_area_id();
+	} else {
+		geoAreaId = get_cookie('wolGeoAreaId');
+		perform_after_load();
+	}
+});
