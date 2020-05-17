@@ -1,0 +1,16 @@
+body{
+	background: #000;
+	color: #fff;
+	font-family: sans-serif;
+}
+
+img{
+	margin: auto;
+	display: block;
+	height: 80vh;
+	margin-top: 6vh;
+}
+
+p{
+	text-align: center;
+}
