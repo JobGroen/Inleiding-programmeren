@@ -1,0 +1,154 @@
+/* Festivalgotchi CSS  */
+body {
+    transform: translate(-50%, -50%);
+    font-family: sans-serif;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+}
+
+
+/* B E G I N S C H E R M */
+section.beginverzorgen {display: block;}
+form.joep {display: none;}
+section {display: none;}
+
+label {
+    display: block;
+    margin: 0 auto;
+}
+
+form input[type=text], form input[type=number] {
+    background-color: rgba(0,0,0,.05);
+    border: 2px solid rgba(0,0,0,.1);
+    border-radius: 5px;
+    margin-top: 30px;
+    font-size: 16px;
+    display: block;
+    padding: 10px;
+    width: 100%;
+}
+
+form input[type=submit]{
+    background-color: #000000;
+    border: 2px solid #000000;
+    text-transform: uppercase;
+    transition: .3s ease;
+    border-radius: 5px;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 16px;
+    margin: 30px 0;
+    padding: 10px;
+    display: block;
+}
+
+form input[type=submit]:hover{
+    background-color: transparent;
+    border: 2px solid #000000;
+    color: #000000;
+    cursor: pointer;
+
+}
+
+form label {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+
+/* S P E L S C H E R M */
+h1 {
+    text-decoration: underline;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 40px;
+}
+
+img {
+    border: 2px solid rgba(0,0,0,.2);
+    width: 300px !important;
+    border-radius: 50%;
+    margin: 45px auto;
+    display: block;
+}
+
+p {
+    text-align: center;
+}
+
+article {
+    margin: 0px auto;
+    width: 400px;
+    padding: 15px 0;
+}
+
+input.knop {
+    display: inline-block;
+    background-color: transparent;
+    border: 2px solid rgba(0,0,0,.1);
+    font-size: 16px;
+    padding: 15px;
+    margin: 0 15px 0 0;
+    transition: .3s ease;
+}
+
+input.knop:hover {
+    background-color: #000000;
+    border: 2px solid #000000;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+.balk {
+    font-size: 20px;
+}
+
+.balk {
+    background: #000000;
+    color: #ffffff;
+    padding: 15px;
+    display: inline-block;
+    border: 2px solid rgba(0,0,0,.1);
+}
+
+.overige-leven {
+    background: transparent;
+    color: #000000;
+    padding: 30px;
+    display: inline-block;
+    border: 2px solid rgba(0,0,0,.1);
+}
+
+
+/* O V E R L E D E N  */
+.overleden {
+    display: none;
+}
+
+.geenreset {
+    display: none;
+}
+
+.resetbutton {
+    display: block;
+    margin: auto;
+}
+
+
+
+
+
+
+
+#status {
+    width: 100%;
+    background-color: #ffffff;
+    border: 2px solid rgba(0,0,0,.1);
+  }
+  
+  #balk {
+    width: 100%;
+    height: 30px;
+    background-color: #000000;
+  }

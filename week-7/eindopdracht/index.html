@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Festivalgotchi</title>
+</head>
+<body>
+
+    <form>
+        <label for="naam">Festivalgotchi naam?</label>
+        <input type="text" name="naam" id="naam" placeholder="Naam" required>
+        <input type="number" name="leeftijd" id="leeftijd" placeholder="Leeftijd" required>
+        <input type="text" name="geboortestad" id="geboortestad" placeholder="Waar kom je vandaan?" required>
+        <input type="submit" value="Maak Festivalgotchi">
+    </form>
+
+    <section>
+        <h1></h1>
+        <img id="status" src="./img/happy.jpg" alt="foto">
+        
+        <p id="tekst"></p>
+        
+        <div id="status">
+            <div class="balk" id="balk"></div>
+          </div>
+
+        <article>
+            <input type="button" class="knop" id="eten" value="Geef eten">
+            <input type="button" class="knop" id="water" value="Geef water">
+            <input type="button" class="knop" id="knuffel" value="Geef knuffel">
+        </article>
+
+        <input type="reset"  class="geenreset" id="reset">
+
+        <p id="naamgotchi">Hou festivalgotchi in leven door hem te voeden, knuffelen en drinken te geven.</p>
+
+    </section>
+
+    <script src="./js/script.js"></script>
+</body>
+</html>
