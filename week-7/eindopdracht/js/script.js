@@ -12,6 +12,7 @@ var drinkPunten = [2,4,6,8,10];
 resetButton = document.querySelector('input#reset');
 overleden = document.querySelector('article');
 var tekst = document.getElementById('tekst');
+var balk = document.getElementById('balk');
 
 balk.innerHTML = 60;
 var teller = 60;
@@ -60,16 +61,13 @@ function afteller(){
     
     if (teller <= 100){
 
-        var balk = document.getElementById('balk');
         var secondeteller = setInterval(tel, 1000);
-        var breedte = balk.innerHTML;
         
         function tel(){
             
             // Class for when festivalgotchi dies
             document.querySelector('article').classList.remove('overleden');
 
-            breedte--;
             balk.innerHTML--;
 
 
@@ -79,7 +77,7 @@ function afteller(){
 
             else if (balk.innerHTML >= 101){
                 foto.src = "img/" + afbeelding[2];
-                tekst.innerHTML = "Ik ga best hard.. misschien even rusten";
+                tekst.innerHTML = "Ik ga best hard..";
                 overleden.classList.add('overleden');
             }
         
@@ -103,7 +101,7 @@ function afteller(){
                 tekst.innerHTML = "Ben je daar nog.. help!";
             }
 
-            if(breedte == 0){
+            if(balk.innerHTML == 0){
                 clearInterval(secondeteller);
                 foto.src = "img/" + afbeelding[5];
                 tekst.innerHTML = "..................";
@@ -120,12 +118,11 @@ function afteller(){
     }
 }
 
-afteller();
-
 function resetgotchi(){
     location.reload();
  }
 
+afteller();
 
 // Eventlisteners
 eetButton.addEventListener('click', function(){ 
